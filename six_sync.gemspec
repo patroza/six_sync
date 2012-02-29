@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.version     = SixSync::VERSION
   s.authors     = ["Sickboy"]
   s.email       = ["sb@dev-heaven.net"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
+  s.homepage    = "http://www.six-networks.org"
+  s.summary     = %q{Provides access to SixNetworks repositories, currently either rSync or zSync based}
   s.description = %q{TODO: Write a gem description}
 
   s.rubyforge_project = "six_sync"
