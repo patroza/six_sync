@@ -18,6 +18,8 @@ require "six_sync/version"
 # Primarily intended for the distribution of Modifications for Games.
 module SixSync
 
+  autoload :Archiver, "six_sync/archiver"
+
   autoload :Checksum, "six_sync/checksum"
   autoload :Md5Checksum, "six_sync/checksum"
   autoload :Sha1Checksum, "six_sync/checksum"
