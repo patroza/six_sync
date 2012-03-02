@@ -18,11 +18,12 @@ module SixSync
 
       ##
       # Verifies if the checksum_type is registered
+      #
       # === Attributes
       #
       # * +checksum_type+ - The checksum_type to lookup
       def has_checksum_type? checksum_type
-        self.checksum_types.include?(SixSync.const_get "#{checksum_type.capitalize}Checksum")
+        self.checksum_types.include?(SixSync.find_klass checksum_type, :Checksum)
       end
 
       ##
