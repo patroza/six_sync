@@ -23,7 +23,7 @@ module SixSync
       #
       # * +file_type+ - The file_type to lookup
       def has_file_type? file_type
-        self.file_types.include?(SixSync.const_get "#{file_type.capitalize}File")
+        self.file_types.include?(SixSync.find_klass file_type, :File)
       end
 
       ##
