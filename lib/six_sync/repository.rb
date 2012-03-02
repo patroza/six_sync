@@ -31,8 +31,8 @@ module SixSync
     # * +pack_directory+ - working directory with archived root, defaults to sync_directory/{DEFAULT_PACK_DIRECTORY_NAME}
     def initialize sync_directory = nil, working_directory = nil, pack_directory = nil
       @sync_directory = sync_directory.nil? ?  ::File.join(::Dir.pwd, DEFAULT_SYNC_DIRECTORY_NAME) : sync_directory
-      @working_directory = working_directory.nil? ? ::File.dirname(sync_directory) : working_directory
-      @pack_directory = pack_directory.nil? ? ::File.join(sync_directory, DEFAULT_PACK_DIRECTORY_NAME) : pack_directory
+      @working_directory = working_directory.nil? ? ::File.dirname(@sync_directory) : working_directory
+      @pack_directory = pack_directory.nil? ? ::File.join(@sync_directory, DEFAULT_PACK_DIRECTORY_NAME) : pack_directory
 
       @status = :default
     end
