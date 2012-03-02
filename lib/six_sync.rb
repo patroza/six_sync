@@ -30,4 +30,15 @@ module SixSync
 
   autoload :Repository, "six_sync/repository.rb"
 
+  module_function
+  ##
+  # Finds the klass in our namespace
+  #
+  # === Attributes
+  #
+  # * +klass+ - Class to lookup
+  # * +trailing+ - Optional, specify type of class
+  def find_klass klass, trailing = nil
+    const_get "#{klass.to_s.capitalize}#{trailing.nil? ? nil : "#{trailing.to_s.capitalize}"}"
+  end
 end
