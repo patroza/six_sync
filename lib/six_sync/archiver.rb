@@ -13,7 +13,7 @@ module SixSync
 
     class <<self
       ##
-      # Contains the registered subclasses checksum types
+      # Contains the registered subclasses archiver types
       def archiver_types; @@archiver_types ||= []; end
 
       ##
