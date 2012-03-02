@@ -7,5 +7,6 @@ context "Options" do
   asserts("Parse returns an OpenStruct") { topic.parse.is_a?(OpenStruct) }
   asserts("Parse tasks is Array") { topic.parse.tasks.is_a?(Array) }
 
+  asserts("Parse help") { topic.parse(["--help"]) }
   asserts("Parse clone") { topic.parse(["--clone", "http://localhost/test"]).tasks }.equals [[:clone, "http://localhost/test"]]
 end

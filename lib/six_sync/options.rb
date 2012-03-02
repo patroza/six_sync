@@ -25,6 +25,13 @@ module SixSync
             "Clone from given URL") do |url|
             options.tasks << [:clone, url]
           end
+
+          # No argument, shows at tail.  This will print an options summary.
+          # Try it and see!
+          opts.on_tail("-h", "--help", "Show this message") do
+            puts opts
+            exit
+          end
         end
 
         opts.parse!(args)
