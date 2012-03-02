@@ -5,4 +5,12 @@ module SixSync
       :default
     end
   end
+
+  class PackFile < File
+
+  end
+
+  class WdFile < File
+
+  end
 end
