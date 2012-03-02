@@ -32,6 +32,8 @@ module SixSync
 
   autoload :Network, "six_sync/network"
 
+  autoload :Options, "six_sync/options"
+
   autoload :Remote, "six_sync/remote"
 
   autoload :Repository, "six_sync/repository"
