@@ -19,6 +19,8 @@ require "six_sync/version"
 module SixSync
 
   autoload :Archiver, "six_sync/archiver"
+  autoload :Zip7Archiver, "six_sync/archiver"
+  autoload :GzipArchiver, "six_sync/archiver"
 
   autoload :Checksum, "six_sync/checksum"
   autoload :Md5Checksum, "six_sync/checksum"
