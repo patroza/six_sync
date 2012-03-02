@@ -6,6 +6,9 @@ module SixSync
     # Represents the status of the object
     attr_reader :status
 
+    # Represents the unarchived root
+    attr_reader :working_directory
+
     ##
     # Initializes the object
     def initialize
