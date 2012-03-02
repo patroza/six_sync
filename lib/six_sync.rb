@@ -13,5 +13,5 @@
 require "six_sync/version"
 
 module SixSync
-  # Your code goes here...
+  autoload :Repository, "six_sync/repository.rb"
 end
