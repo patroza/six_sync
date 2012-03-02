@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email       = ["sb@dev-heaven.net"]
   s.homepage    = "http://www.six-networks.org"
   s.summary     = %q{Provides access to SixNetworks repositories, currently either rSync or zSync based}
-  s.description = %q{TODO: Write a gem description}
+  s.description = %q{Library and bins to work with SixSync repositories}
 
   s.rubyforge_project = "six_sync"
 
