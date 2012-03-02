@@ -1,9 +1,15 @@
 module SixSync
+  ##
+  # Repositories represent the combination of all components,
+  # It's the master class that controls the others to perform actions on the repository
   class Repository
-    attr_accessor :status
+    # Represents the status of the object
+    attr_reader :status
 
-    def status
-      :default
+    ##
+    # Initializes the object
+    def initialize
+      @status = :default
     end
   end
 end
