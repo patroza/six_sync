@@ -18,17 +18,17 @@ require "six_sync/version"
 # Primarily intended for the distribution of Modifications for Games.
 module SixSync
 
-  autoload :Checksum, "six_sync/checksum.rb"
-  autoload :Md5Checksum, "six_sync/checksum.rb"
-  autoload :Sha1Checksum, "six_sync/checksum.rb"
+  autoload :Checksum, "six_sync/checksum"
+  autoload :Md5Checksum, "six_sync/checksum"
+  autoload :Sha1Checksum, "six_sync/checksum"
 
-  autoload :File, "six_sync/file.rb"
-  autoload :PackFile, "six_sync/file.rb"
-  autoload :WdFile, "six_sync/file.rb"
+  autoload :File, "six_sync/file"
+  autoload :PackFile, "six_sync/file"
+  autoload :WdFile, "six_sync/file"
 
-  autoload :Remote, "six_sync/remote.rb"
+  autoload :Remote, "six_sync/remote"
 
-  autoload :Repository, "six_sync/repository.rb"
+  autoload :Repository, "six_sync/repository"
 
   module_function
   ##
