@@ -20,6 +20,12 @@ module SixSync
 
     ##
     # Initializes the object
+    #
+    # === Attributes
+    #
+    # +sync_directory+ - repository directory with configuration files
+    # +working_directory+ - working directory with unarchived root
+    # +pack_directory+ - working directory with archived root
     def initialize sync_directory, working_directory = nil, pack_directory = nil
       @sync_directory = sync_directory
       @working_directory = working_directory.nil? ? ::File.dirname(sync_directory) : working_directory
