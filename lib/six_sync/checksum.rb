@@ -6,4 +6,12 @@ module SixSync
       :default
     end
   end
+
+  class Md5Checksum < Checksum
+
+  end
+
+  class Sha1Checksum < Checksum
+
+  end
 end
