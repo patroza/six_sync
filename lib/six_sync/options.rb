@@ -30,7 +30,7 @@ module SixSync
           # Try it and see!
           opts.on_tail("-h", "--help", "Show this message") do
             puts opts
-            exit
+            return exit
           end
         end
 
