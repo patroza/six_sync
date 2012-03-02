@@ -32,6 +32,12 @@ module SixSync
             puts opts
             return exit
           end
+
+          # Another typical switch to print the version.
+          opts.on_tail("-v", "--version", "Show version") do
+            puts SixSync::VERSION
+            return exit
+          end
         end
 
         opts.parse!(args)
