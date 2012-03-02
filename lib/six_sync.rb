@@ -13,6 +13,7 @@
 require "six_sync/version"
 
 module SixSync
+  autoload :File, "six_sync/file.rb"
   autoload :Remote, "six_sync/remote.rb"
   autoload :Repository, "six_sync/repository.rb"
 end
