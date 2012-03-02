@@ -32,6 +32,14 @@ module SixSync
             options.tasks << [:init, dir]
           end
 
+          # Boolean switch.
+          opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+            options.verbose = v
+          end
+
+          opts.separator ""
+          opts.separator "Common options:"
+
           # No argument, shows at tail.  This will print an options summary.
           # Try it and see!
           opts.on_tail("-h", "--help", "Show this message") do
