@@ -26,6 +26,12 @@ module SixSync
             options.tasks << [:clone, url]
           end
 
+          opts.on("-i", "--init [DIR]",
+                  "Init at given dir, or current dir if unspecified") do |dir|
+            dir = Dir.pwd if dir.nil?
+            options.tasks << [:init, dir]
+          end
+
           # No argument, shows at tail.  This will print an options summary.
           # Try it and see!
           opts.on_tail("-h", "--help", "Show this message") do
