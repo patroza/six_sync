@@ -14,6 +14,8 @@ require "six_sync/version"
 
 module SixSync
 
+  autoload :Checksum, "six_sync/checksum.rb"
+
   autoload :File, "six_sync/file.rb"
   autoload :PackFile, "six_sync/file.rb"
   autoload :WdFile, "six_sync/file.rb"
