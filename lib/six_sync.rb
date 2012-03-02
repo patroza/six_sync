@@ -12,6 +12,10 @@
 
 require "six_sync/version"
 
+##
+# SixSync is a library for distributing and managing repositories of files,
+# Leveraging rSync and zSync for differential transfers
+# Primarily intended for the distribution of Modifications for Games.
 module SixSync
 
   autoload :Checksum, "six_sync/checksum.rb"
