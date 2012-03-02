@@ -30,6 +30,8 @@ module SixSync
   autoload :PackFile, "six_sync/file"
   autoload :WdFile, "six_sync/file"
 
+  autoload :Network, "six_sync/network"
+
   autoload :Remote, "six_sync/remote"
 
   autoload :Repository, "six_sync/repository"
