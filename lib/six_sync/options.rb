@@ -39,6 +39,12 @@ module SixSync
             options.tasks << [:repair, dir]
           end
 
+          opts.on("-c", "--commit [DIR]",
+                  "Commit the given dir, or current dir if unspecified") do |dir|
+            dir = Dir.pwd if dir.nil?
+            options.tasks << [:commit, dir]
+          end
+
           opts.on("-p", "--push [DIR]",
                   "Push the given dir, or current dir if unspecified") do |dir|
             dir = Dir.pwd if dir.nil?
