@@ -11,13 +11,21 @@ module SixSync
         options = OpenStruct.new
         options.tasks = []
 
-        opts = OptionParser.new do |opts|
+        _parse(options).parse!(args)
+
+        options
+      end
+
+      private
+      # Parser definition
+      def _parse options
+        OptionParser.new do |opts|
           opts.banner = "Usage: #{$0} [options]"
           opts.separator ""
           opts.separator "Specific options:"
 
           opts.on("-c", "--clone URL",
-            "Clone from given URL") do |url|
+                  "Clone from given URL") do |url|
             options.tasks << [:clone, url]
           end
 
@@ -63,27 +71,28 @@ module SixSync
           # Try it and see!
           opts.on_tail("-h", "--help", "Show this message") do
             puts opts
-            return exit
+            exit
           end
 
           # Another typical switch to print the version.
           opts.on_tail("-v", "--version", "Show version") do
             puts SixSync::VERSION
-            return exit
+            exit
           end
         end
-
-        opts.parse!(args)
-
-        options
       end
     end
   end
 
   # Handles commandline parameters for the Network tool
-  class OptionsNetwork
+  class OptionsNetwork < Options
     class <<self
+      private
+      def _parse options
+        OptionParser.new do |opts|
 
+        end
+      end
     end
   end
 end
