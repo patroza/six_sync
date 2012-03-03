@@ -1,5 +1,4 @@
 module SixSync
-  ##
   # Repositories represent the combination of all components,
   # It's the master class that controls the others to perform actions on the repository
   class Repository
@@ -21,14 +20,10 @@ module SixSync
     # Represents the archived root
     attr_reader :pack_directory
 
-    ##
     # Initializes the object
-    #
-    # === Attributes
-    #
-    # * +sync_directory+ - repository directory with configuration files, defaults to current_working_directory/{DEFAULT_SYNC_DIRECTORY_NAME}
-    # * +working_directory+ - working directory with unarchived root, defaults to parent of sync_directory
-    # * +pack_directory+ - working directory with archived root, defaults to sync_directory/{DEFAULT_PACK_DIRECTORY_NAME}
+    # @param [String] sync_directory Repository directory with configuration files, defaults to current_working_directory/{DEFAULT_SYNC_DIRECTORY_NAME}
+    # @param [String] working_directory Working directory with unarchived root, defaults to parent of sync_directory
+    # @param [String] pack_directory Pack directory with archived root, defaults to sync_directory/{DEFAULT_PACK_DIRECTORY_NAME}
     def initialize sync_directory = nil, working_directory = nil, pack_directory = nil
       @sync_directory = sync_directory.nil? ?  ::File.join(::Dir.pwd, DEFAULT_SYNC_DIRECTORY_NAME) : sync_directory
       @working_directory = working_directory.nil? ? ::File.dirname(@sync_directory) : working_directory

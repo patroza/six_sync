@@ -12,7 +12,6 @@
 
 require "six_sync/version"
 
-##
 # SixSync is a library for distributing and managing repositories of files,
 # Leveraging rSync and zSync for differential transfers
 # Primarily intended for the distribution of Modifications for Games.
@@ -39,13 +38,10 @@ module SixSync
   autoload :Repository, "six_sync/repository"
 
   module_function
-  ##
+
   # Finds the klass in our namespace
-  #
-  # === Attributes
-  #
-  # * +klass+ - Class to lookup
-  # * +trailing+ - Optional, specify type of class
+  # @param [Symbol] klass Class to lookup
+  # @param [Smybol] trailing Specify type of class
   def find_klass klass, trailing = nil
     const_get "#{klass.to_s.capitalize}#{trailing.nil? ? nil : "#{trailing.to_s.capitalize}"}"
   end
