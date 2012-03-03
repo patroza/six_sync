@@ -26,7 +26,7 @@ context "Options" do
     end
 
     context "Network" do
-      setup { SixSync::OptionsNetwork }
+      setup { SixSync::NetworkOptions }
 
       asserts("returns an OpenStruct") { topic.parse.is_a?(OpenStruct) }
       asserts("tasks is Array") { topic.parse.tasks.is_a?(Array) }
@@ -35,8 +35,8 @@ context "Options" do
       asserts("no-verbose") { topic.parse(["--no-verbose"]).verbose }.equals false
 
       # TODO: How to test the exit properly?
-      asserts("version") { mock(SixSync::OptionsNetwork).exit { 0 }; topic.parse(["--version"])} #.equals 0
-      asserts("help") { mock(SixSync::OptionsNetwork).exit { 0 }; topic.parse(["--help"]) } #.equals 0
+      asserts("version") { mock(SixSync::NetworkOptions).exit { 0 }; topic.parse(["--version"])} #.equals 0
+      asserts("help") { mock(SixSync::NetworkOptions).exit { 0 }; topic.parse(["--help"]) } #.equals 0
 
       asserts("init") { topic.parse(["--init"]).tasks }.same_elements [[:init, Dir.pwd]]
       asserts("init at specified dir") { topic.parse(["--init", "C:/test/test"]).tasks }.same_elements [[:init, "C:/test/test"]]

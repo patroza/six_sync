@@ -85,7 +85,7 @@ module SixSync
   end
 
   # Handles commandline parameters for the Network tool
-  class OptionsNetwork < Options
+  class NetworkOptions < Options
     class <<self
       private
       def _parse options

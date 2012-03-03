@@ -32,7 +32,7 @@ module SixSync
   autoload :Network, "six_sync/network"
 
   autoload :Options, "six_sync/options"
-  autoload :OptionsNetwork, "six_sync/options"
+  autoload :NetworkOptions, "six_sync/options"
 
   autoload :Remote, "six_sync/remote"
 
