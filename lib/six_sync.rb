@@ -41,7 +41,7 @@ module SixSync
 
   # Finds the klass in our namespace
   # @param [Symbol] klass Class to lookup
-  # @param [Smybol] trailing Specify type of class
+  # @param [Symbol] trailing Specify type of class
   def find_klass klass, trailing = nil
     const_get "#{klass.to_s.capitalize}#{trailing.nil? ? nil : "#{trailing.to_s.capitalize}"}"
   end
