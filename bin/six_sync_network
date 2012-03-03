@@ -2,3 +2,5 @@
 
 require 'six_sync'
 
+# Parse commandline arguments
+options = SixSync::NetworkOptions.parse
