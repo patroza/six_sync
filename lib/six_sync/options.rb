@@ -2,16 +2,11 @@ require 'optparse'
 require 'ostruct'
 
 module SixSync
-  ##
   # Handles commandline parameters
   class Options
     class <<self
-      ##
       # Parse given args
-      #
-      # === Arguments
-      #
-      # * +args+ - Optional. Parse given args. Defaults to ARGV (commandline args)
+      # @param [Array] args Parse given args
       def parse args = ARGV
         options = OpenStruct.new
         options.tasks = []
