@@ -2,7 +2,7 @@ require 'optparse'
 require 'ostruct'
 
 module SixSync
-  # Handles commandline parameters
+  # Handles commandline parameters for the Main tool
   class Options
     class <<self
       # Parse given args
@@ -77,6 +77,13 @@ module SixSync
 
         options
       end
+    end
+  end
+
+  # Handles commandline parameters for the Network tool
+  class OptionsNetwork
+    class <<self
+
     end
   end
 end

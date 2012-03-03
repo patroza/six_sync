@@ -25,5 +25,9 @@ context "Options" do
       asserts("commit") { topic.parse(["--commit"]).tasks }.same_elements [[:commit, Dir.pwd]]
       asserts("push") { topic.parse(["--push"]).tasks }.same_elements [[:push, Dir.pwd]]
     end
+
+    context "Network" do
+      setup { SixSync::OptionsNetwork }
+    end
   end
 end
