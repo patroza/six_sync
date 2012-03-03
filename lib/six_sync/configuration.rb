@@ -1,5 +1,5 @@
 module SixSync
-  # Configuration handler
+  # Configuration holder and manager
   class Configuration
     # Represents the status of the object
     attr_reader :status
