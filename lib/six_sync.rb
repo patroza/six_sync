@@ -25,6 +25,8 @@ module SixSync
   autoload :Md5Checksum, "six_sync/checksum"
   autoload :Sha1Checksum, "six_sync/checksum"
 
+  autoload :Configuration, "six_sync/configuration"
+
   autoload :File, "six_sync/file"
   autoload :PackFile, "six_sync/file"
   autoload :WdFile, "six_sync/file"
@@ -32,6 +34,7 @@ module SixSync
   autoload :Network, "six_sync/network"
 
   autoload :Options, "six_sync/options"
+  autoload :NetworkOptions, "six_sync/options"
 
   autoload :Remote, "six_sync/remote"
 
@@ -41,7 +44,7 @@ module SixSync
 
   # Finds the klass in our namespace
   # @param [Symbol] klass Class to lookup
-  # @param [Smybol] trailing Specify type of class
+  # @param [Symbol] trailing Specify type of class
   def find_klass klass, trailing = nil
     const_get "#{klass.to_s.capitalize}#{trailing.nil? ? nil : "#{trailing.to_s.capitalize}"}"
   end
