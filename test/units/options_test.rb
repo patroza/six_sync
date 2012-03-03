@@ -20,5 +20,7 @@ context "Options" do
     asserts("update") { topic.parse(["--update"]).tasks }.same_elements [[:update, Dir.pwd]]
 
     asserts("repair") { topic.parse(["--repair"]).tasks }.same_elements [[:repair, Dir.pwd]]
+
+    asserts("push") { topic.parse(["--push"]).tasks }.same_elements [[:push, Dir.pwd]]
   end
 end

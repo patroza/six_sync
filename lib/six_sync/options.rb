@@ -39,6 +39,12 @@ module SixSync
             options.tasks << [:repair, dir]
           end
 
+          opts.on("-p", "--push [DIR]",
+                  "Push the given dir, or current dir if unspecified") do |dir|
+            dir = Dir.pwd if dir.nil?
+            options.tasks << [:push, dir]
+          end
+
           # Boolean switch.
           opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
             options.verbose = v
