@@ -25,6 +25,8 @@ module SixSync
   autoload :Md5Checksum, "six_sync/checksum"
   autoload :Sha1Checksum, "six_sync/checksum"
 
+  autoload :Configuration, "six_sync/configuration"
+
   autoload :File, "six_sync/file"
   autoload :PackFile, "six_sync/file"
   autoload :WdFile, "six_sync/file"
