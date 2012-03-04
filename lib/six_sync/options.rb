@@ -13,6 +13,9 @@ module SixSync
 
         _parse(options).parse!(args)
 
+        options.argv = args.clone
+        args.clear
+
         options
       end
 
