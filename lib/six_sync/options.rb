@@ -145,7 +145,7 @@ module SixSync
           end
 
           # Another typical switch to print the version.
-          opts.on_tail("-v", "--version", "Show version") do
+          opts.on_tail("--version", "Show version") do
             puts SixSync::VERSION
             exit
           end
