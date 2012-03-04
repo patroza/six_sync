@@ -10,7 +10,7 @@
   program(s) have been supplied.
 =end
 
-require "six_sync/version"
+require_relative "six_sync/version"
 
 # SixSync is a library for distributing and managing repositories of files,
 # Leveraging rSync and zSync for differential transfers
