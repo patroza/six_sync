@@ -13,12 +13,13 @@ context "Options" do
       end
 
       context "Specific params" do
-        asserts("verbose") { topic.parse(["-v"]).verbose }.equals true
-        asserts("no-verbose") { topic.parse(["--no-verbose"]).verbose }.equals false
+        asserts("no-verbose") { topic.parse([]).options.verbose? }.equals false
+        asserts("verbose") { topic.parse(["-v"]).options.verbose? }.equals true
+        asserts("empty argv") { topic.parse(["-v"]).argv }.same_elements []
 
         # TODO: How to test the exit properly?
-        asserts("version") { mock(SixSync::Options).exit { 0 }; topic.parse(["--version"])} #.equals 0
-        asserts("help") { mock(SixSync::Options).exit { 0 }; topic.parse(["--help"]) } #.equals 0
+        asserts("version") { topic.parse(["--version"])} #.equals 0
+        asserts("help") { topic.parse(["--help"]) } #.equals 0
 
         asserts("init") { topic.parse(["--init"]).tasks }.same_elements [[:init, Dir.pwd]]
         asserts("init at specified dir") { topic.parse(["--init", "C:/test/test"]).tasks }.same_elements [[:init, "C:/test/test"]]
@@ -40,12 +41,13 @@ context "Options" do
       end
 
       context "Specific params" do
-        asserts("verbose") { topic.parse(["-v"]).verbose }.equals true
-        asserts("no-verbose") { topic.parse(["--no-verbose"]).verbose }.equals false
+        asserts("no-verbose") { topic.parse([]).options.verbose? }.equals false
+        asserts("verbose") { topic.parse(["-v"]).options.verbose? }.equals true
+        asserts("empty argv") { topic.parse(["-v"]).argv }.same_elements []
 
         # TODO: How to test the exit properly?
-        asserts("version") { mock(SixSync::NetworkOptions).exit { 0 }; topic.parse(["--version"])} #.equals 0
-        asserts("help") { mock(SixSync::NetworkOptions).exit { 0 }; topic.parse(["--help"]) } #.equals 0
+        asserts("version") { topic.parse(["--version"])} #.equals 0
+        asserts("help") { topic.parse(["--help"]) } #.equals 0
 
         asserts("init") { topic.parse(["--init"]).tasks }.same_elements [[:init, Dir.pwd]]
         asserts("init at specified dir") { topic.parse(["--init", "C:/test/test"]).tasks }.same_elements [[:init, "C:/test/test"]]
