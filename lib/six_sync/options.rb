@@ -23,7 +23,7 @@ module SixSync
       private
       # Parser definition
       def _parse options
-        #root_command = Cri::Command.new_basic_root
+        #root_command = Cri::Command.new_basic_root # Bug with h self.help -> cmd.help etc
         root_command = Cri::Command.define do
           name        'six_sync'
           usage       'six_sync [options]'
