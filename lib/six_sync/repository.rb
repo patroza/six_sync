@@ -61,10 +61,10 @@ module SixSync
       # @param [String] working_directory
       # @param [String] sync_directory
       # @param [String] pack_directory
-      # @param [String] archive_format
       def clone url, working_directory = nil, sync_directory = nil, pack_directory = nil, archive_format = nil
-        repo = self.init working_directory, sync_directory, pack_directory, archive_format
-        #repo.remotes = [Remote.new url]
+        # archive_format is determined by the remote
+        repo = self.init working_directory, sync_directory, pack_directory
+        #repo.remotes = url.split(",").map {|url| Remote.new url}
         #repo.update
         repo
       end

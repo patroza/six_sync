@@ -41,11 +41,11 @@ module SixSync
           name    'clone'
           usage   'clone URL [DIR] [options]'
           summary 'Clone a repository'
+          description '[DIR] Defaults to current directory'
           aliases :c
 
-          option :a, :archive_format, 'Specify archive format', :argument => :required
-          option :p, :pack_dir, 'Specify Pack directory', :argument => :required
-          option :s, :sync_dir, 'Specify Sync directory', :argument => :required
+          option :s, :sync_dir, 'Specify Sync directory. Defaults to DIR/.sync', :argument => :required
+          option :p, :pack_dir, 'Specify Pack directory. Defaults to SYNC_DIR/.pack', :argument => :required
 
           run do |opts, args, cmd|
             puts "Running Clone, #{opts}, #{args}, #{cmd}"
@@ -59,7 +59,7 @@ module SixSync
                        else
               args
             end
-            SixSync.clone url, working_dir, opts[:sync_dir], opts[:pack_dir], opts[:archive_format]
+            Repository.clone url, working_dir, opts[:sync_dir], opts[:pack_dir]
           end
         end
 
@@ -67,16 +67,17 @@ module SixSync
           name    'init'
           usage   'init [DIR] [options]'
           summary 'Init a repository'
+          description '[DIR] Defaults to current directory'
           aliases :i
 
-          option :a, :archive_format, 'Specify archive format', :argument => :required
-          option :p, :pack_dir, 'Specify Pack directory', :argument => :required
-          option :s, :sync_dir, 'Specify Sync directory', :argument => :required
+          option :a, :archive_format, "Specify archive format. Defaults to #{SixSync::Repository::DEFAULT_ARCHIVE_FORMAT}", :argument => :required
+          option :s, :sync_dir, 'Specify Sync directory. Defaults to DIR/.sync', :argument => :required
+          option :p, :pack_dir, 'Specify Pack directory. Defaults to SYNC_DIR/.pack', :argument => :required
 
           run do |opts, args, cmd|
             puts "Running Init, #{opts}, #{args}, #{cmd}"
             working_dir = args.empty? ? Dir.pwd : args[0]
-            SixSync.init working_dir, opts[:sync_dir], opts[:pack_dir], opts[:archive_format]
+            Repository.init working_dir, opts[:sync_dir], opts[:pack_dir], opts[:archive_format]
           end
         end
 
@@ -84,12 +85,13 @@ module SixSync
           name    'update'
           usage   'update [DIR] [options]'
           summary 'Update a repository'
+          description '[DIR] Defaults to current directory'
           aliases :u
 
           run do |opts, args, cmd|
             puts "Running update, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # SixSync.update dir
+            # Repository.update dir
           end
         end
 
@@ -97,12 +99,13 @@ module SixSync
           name    'repair'
           usage   'repair [DIR] [options]'
           summary 'Repair a repository'
+          description '[DIR] Defaults to current directory'
           aliases :r
 
           run do |opts, args, cmd|
             puts "Running repair, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # SixSync.repair dir
+            # Repository.repair dir
           end
         end
 
@@ -110,12 +113,13 @@ module SixSync
           name    'commit'
           usage   'commit [DIR] [options]'
           summary 'Commit a repository'
+          description '[DIR] Defaults to current directory'
           #aliases :c
 
           run do |opts, args, cmd|
             puts "Running commit, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # SixSync.commit dir
+            # Repository.commit dir
           end
         end
 
@@ -123,12 +127,13 @@ module SixSync
           name    'push'
           usage   'push [DIR] [options]'
           summary 'Push a repository'
+          description '[DIR] Defaults to current directory'
           aliases :i
 
           run do |opts, args, cmd|
             puts "Running push, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # SixSync.push dir
+            # Repository.push dir
           end
         end
 
@@ -152,6 +157,7 @@ module SixSync
           name    'clone'
           usage   'clone URL [DIR] [options]'
           summary 'Clone a repository'
+          description '[DIR] Defaults to current directory'
           aliases :c
 
           run do |opts, args, cmd|
@@ -166,7 +172,7 @@ module SixSync
                        else
                          args
                        end
-            # SixSync.clone url, dir
+            # Network.clone url, dir
           end
         end
 
@@ -174,12 +180,15 @@ module SixSync
           name    'init'
           usage   'init [DIR] [options]'
           summary 'Init a repository'
+          description '[DIR] Defaults to current directory'
           aliases :i
+
+          option :a, :archive_format, 'Specify archive format', :argument => :required
 
           run do |opts, args, cmd|
             puts "Running Init, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # SixSync.init dir
+            # Network.init dir
           end
         end
 
@@ -187,12 +196,13 @@ module SixSync
           name    'update'
           usage   'update [DIR] [options]'
           summary 'Update a repository'
+          description '[DIR] Defaults to current directory'
           aliases :u
 
           run do |opts, args, cmd|
             puts "Running update, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # SixSync.update dir
+            # Network.update dir
           end
         end
 
@@ -200,12 +210,13 @@ module SixSync
           name    'repair'
           usage   'repair [DIR] [options]'
           summary 'Repair a repository'
+          description '[DIR] Defaults to current directory'
           aliases :r
 
           run do |opts, args, cmd|
             puts "Running repair, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # SixSync.repair dir
+            # Network.repair dir
           end
         end
 
@@ -213,12 +224,13 @@ module SixSync
           name    'commit'
           usage   'commit [DIR] [options]'
           summary 'Commit a repository'
+          description '[DIR] Defaults to current directory'
           #aliases :c
 
           run do |opts, args, cmd|
             puts "Running commit, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # SixSync.commit dir
+            # Network.commit dir
           end
         end
 
@@ -226,12 +238,13 @@ module SixSync
           name    'push'
           usage   'push [DIR] [options]'
           summary 'Push a repository'
+          description '[DIR] Defaults to current directory'
           aliases :i
 
           run do |opts, args, cmd|
             puts "Running push, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # SixSync.push dir
+            # Network.push dir
           end
         end
 
