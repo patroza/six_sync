@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   # specify any dependencies here; for example:
-  s.add_runtime_dependency "slop"
+  s.add_runtime_dependency "cri"
   s.add_development_dependency "riot"
   s.add_development_dependency "yard"
 end

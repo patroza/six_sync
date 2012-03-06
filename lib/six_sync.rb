@@ -42,6 +42,11 @@ module SixSync
 
   module_function
 
+  # Retrieve full product version string
+  def product_version
+    "SixSync version #{VERSION}"
+  end
+
   # Finds the klass in our namespace
   # @param [Symbol] klass Class to lookup
   # @param [Symbol] trailing Specify type of class

@@ -1,4 +1,4 @@
-require 'slop'
+require 'cri'
 require 'ostruct'
 
 module SixSync
@@ -11,7 +11,8 @@ module SixSync
         options = OpenStruct.new
         options.tasks = []
 
-        options.options = _parse(args, options)
+        root_command = _parse(options)
+        root_command.run(args)
 
         options.argv = args.clone
         args.clear
@@ -21,108 +22,194 @@ module SixSync
 
       private
       # Parser definition
-      def _parse args, options
-        opts = Slop.parse!(args, {help: true, strict: true}) do
-          banner "Usage: #{$0} [options]"
+      def _parse options
+        #root_command = Cri::Command.new_basic_root
+        root_command = Cri::Command.define do
+          name        'six_sync'
+          usage       'six_sync [options]'
+          summary     'Managing and Distributing of SixSync repositories'
+          description 'This command provides the basic functionality'
 
-          on :c, :clone, 'Clone from given URL',
-             optional_argument: true do |url|
-            options.tasks << [:clone, url]
+
+          option :h, :help, 'show help for this command' do |value, cmd|
+            puts cmd.help
+            exit 0
           end
 
-          on :i, :init, 'Init at given dir, or current dir if unspecified',
-             optional_argument: true do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:init, dir]
+          subcommand Cri::Command.new_basic_help
+
+          flag nil, :version, 'Show version' do |value, cmd|
+           puts SixSync.product_version
+           exit 0
           end
 
-          on :u, :update, 'Update the given dir, or current dir if unspecified',
-             optional_argument: true do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:update, dir]
-          end
+          flag :v, :verbose, 'Verbose'
+        end
 
-          on :r, :repair, 'Repair the given dir, or current dir if unspecified',
-             optional_argument: true do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:repair, dir]
-          end
+        root_command.define_command do
+          name    'clone'
+          usage   'clone [URL] [options]'
+          summary 'Clone a repository'
+          aliases :c
 
-          on :commit, 'Commit the given dir, or current dir if unspecified',
-             optional_argument: true do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:commit, dir]
-          end
-
-          on :p, :push, 'Push the given dir, or current dir if unspecified',
-             optional_argument: true do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:push, dir]
-          end
-
-          on :v, :verbose, 'Enable verbose mode'
-
-          on :version, 'Show version' do
-            puts SixSync::VERSION
+          run do |opts, args, cmd|
+            puts "Running Clone, #{opts}, #{args}, #{cmd}"
+            options.tasks << [:clone, args[0] || Dir.pwd]
           end
         end
 
-        opts
+        root_command.define_command do
+          name    'init'
+          usage   'init [DIR] [options]'
+          summary 'Init a repository'
+          aliases :i
+
+          run do |opts, args, cmd|
+            puts "Running Init, #{opts}, #{args}, #{cmd}"
+            options.tasks << [:init, args[0] || Dir.pwd]
+          end
+        end
+
+        root_command.define_command do
+          name    'update'
+          usage   'update [DIR] [options]'
+          summary 'Update a repository'
+          aliases :u
+
+          run do |opts, args, cmd|
+            puts "Running update, #{opts}, #{args}, #{cmd}"
+            options.tasks << [:update, args[0] || Dir.pwd]
+          end
+        end
+
+        root_command.define_command do
+          name    'repair'
+          usage   'repair [DIR] [options]'
+          summary 'Repair a repository'
+          aliases :r
+
+          run do |opts, args, cmd|
+            puts "Running repair, #{opts}, #{args}, #{cmd}"
+            options.tasks << [:repair, args[0] || Dir.pwd]
+          end
+        end
+
+        root_command.define_command do
+          name    'commit'
+          usage   'commit [DIR] [options]'
+          summary 'Commit a repository'
+          #aliases :c
+
+          run do |opts, args, cmd|
+            puts "Running commit, #{opts}, #{args}, #{cmd}"
+            options.tasks << [:commit, args[0] || Dir.pwd]
+          end
+        end
+
+        root_command.define_command do
+          name    'push'
+          usage   'push [DIR] [options]'
+          summary 'Push a repository'
+          aliases :i
+
+          run do |opts, args, cmd|
+            puts "Running push, #{opts}, #{args}, #{cmd}"
+            options.tasks << [:push, args[0] || Dir.pwd]
+          end
+        end
+
+        root_command.add_command _parse_network_command(options)
+
+        root_command
       end
-    end
-  end
 
-  # Handles commandline parameters for the Network tool
-  class NetworkOptions < Options
-    class <<self
-      private
-      def _parse args, options
-        opts = Slop.parse!(args, {help: true, strict: true}) do
-          banner "Usage: #{$0} [options]"
+      def _parse_network_command options
+        network_command = Cri::Command.define do
+          name    'network'
+          usage   'network COMMAND [URL] [options]'
+          aliases :n
 
-          on :c, :clone, 'Clone from given URL',
-             optional_argument: true do |url|
-            options.tasks << [:clone, url]
-          end
+          subcommand Cri::Command.new_basic_help
 
-          on :i, :init, 'Init at given dir, or current dir if unspecified',
-             optional_argument: true do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:init, dir]
-          end
-
-          on :u, :update, 'Update the given dir, or current dir if unspecified',
-             optional_argument: true do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:update, dir]
-          end
-
-          on :r, :repair, 'Repair the given dir, or current dir if unspecified',
-             optional_argument: true do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:repair, dir]
-          end
-
-          on :commit, 'Commit the given dir, or current dir if unspecified',
-             optional_argument: true do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:commit, dir]
-          end
-
-          on :p, :push, 'Push the given dir, or current dir if unspecified',
-             optional_argument: true do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:push, dir]
-          end
-
-          on :v, :verbose, 'Enable verbose mode'
-
-          on :version, 'Show version' do
-            puts SixSync::VERSION
+          run do |opts, args, cmd|
+            puts "Running Network, #{opts}, #{args}, #{cmd}"
+            options.tasks << [:clone, args[0] || Dir.pwd]
           end
         end
 
-        opts
+        network_command.define_command do
+          name    'clone'
+          usage   'clone [URL] [options]'
+          summary 'Clone a network'
+          aliases :c
+
+          run do |opts, args, cmd|
+            puts "Running Clone, #{opts}, #{args}, #{cmd}"
+            options.tasks << [:clone, args[0] || Dir.pwd]
+          end
+        end
+
+        network_command.define_command do
+          name    'init'
+          usage   'init [DIR] [options]'
+          summary 'Init a network'
+          aliases :i
+
+          run do |opts, args, cmd|
+            puts "Running Init, #{opts}, #{args}, #{cmd}"
+            options.tasks << [:init, args[0] || Dir.pwd]
+          end
+        end
+
+        network_command.define_command do
+          name    'update'
+          usage   'update [DIR] [options]'
+          summary 'Update a network'
+          aliases :u
+
+          run do |opts, args, cmd|
+            puts "Running update, #{opts}, #{args}, #{cmd}"
+            options.tasks << [:update, args[0] || Dir.pwd]
+          end
+        end
+
+        network_command.define_command do
+          name    'repair'
+          usage   'repair [DIR] [options]'
+          summary 'Repair a network'
+          aliases :r
+
+          run do |opts, args, cmd|
+            puts "Running repair, #{opts}, #{args}, #{cmd}"
+            options.tasks << [:repair, args[0] || Dir.pwd]
+          end
+        end
+
+        network_command.define_command do
+          name    'commit'
+          usage   'commit [DIR] [options]'
+          summary 'Commit a network'
+          #aliases :c
+
+          run do |opts, args, cmd|
+            puts "Running commit, #{opts}, #{args}, #{cmd}"
+            options.tasks << [:commit, args[0] || Dir.pwd]
+          end
+        end
+
+        network_command.define_command do
+          name    'push'
+          usage   'push [DIR] [options]'
+          summary 'Push a network'
+          aliases :i
+
+          run do |opts, args, cmd|
+            puts "Running push, #{opts}, #{args}, #{cmd}"
+            options.tasks << [:push, args[0] || Dir.pwd]
+          end
+        end
+
+        network_command
       end
     end
   end
