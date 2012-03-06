@@ -52,4 +52,15 @@ module SixSync
   def find_klass klass, trailing = nil
     const_get "#{klass.to_s.capitalize}#{trailing.nil? ? nil : "#{trailing.to_s.capitalize}"}"
   end
+
+  # Initialize a repository
+  def init working_dir = nil, sync_dir = nil, pack_dir = nil, archive_format = nil
+    SixSync::Repository.init working_dir, sync_dir, pack_dir, archive_format
+  end
+
+  alias_method :old_clone, :clone
+  # Clone a repository from url
+  def clone url, working_dir = nil, sync_dir = nil, pack_dir = nil, archive_format = nil
+    SixSync::Repository.clone url, working_dir, sync_dir, pack_dir, archive_format
+  end
 end

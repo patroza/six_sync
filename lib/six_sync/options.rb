@@ -29,7 +29,7 @@ module SixSync
 
           subcommand Cri::Command.new_basic_help
 
-          flag nil, :version, 'Show version' do |value, cmd|
+          option nil, :version, 'Show version' do |value, cmd|
            puts SixSync.product_version
            exit 0
           end
@@ -43,6 +43,10 @@ module SixSync
           summary 'Clone a repository'
           aliases :c
 
+          option :a, :archive_format, 'Specify archive format', :argument => :required
+          option :p, :pack_dir, 'Specify Pack directory', :argument => :required
+          option :s, :sync_dir, 'Specify Sync directory', :argument => :required
+
           run do |opts, args, cmd|
             puts "Running Clone, #{opts}, #{args}, #{cmd}"
             if args.empty?
@@ -50,12 +54,12 @@ module SixSync
               exit 1
             end
 
-            url, dir = if args.size == 1
+            url, working_dir = if args.size == 1
               [args[0], Dir.pwd]
                        else
               args
             end
-            # SixSync.clone url, dir
+            SixSync.clone url, working_dir, opts[:sync_dir], opts[:pack_dir], opts[:archive_format]
           end
         end
 
@@ -65,10 +69,14 @@ module SixSync
           summary 'Init a repository'
           aliases :i
 
+          option :a, :archive_format, 'Specify archive format', :argument => :required
+          option :p, :pack_dir, 'Specify Pack directory', :argument => :required
+          option :s, :sync_dir, 'Specify Sync directory', :argument => :required
+
           run do |opts, args, cmd|
             puts "Running Init, #{opts}, #{args}, #{cmd}"
-            dir = args.empty? ? Dir.pwd : args[0]
-            # SixSync.init dir
+            working_dir = args.empty? ? Dir.pwd : args[0]
+            SixSync.init working_dir, opts[:sync_dir], opts[:pack_dir], opts[:archive_format]
           end
         end
 
