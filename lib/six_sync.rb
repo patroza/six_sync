@@ -55,12 +55,12 @@ module SixSync
 
   # Initialize a repository
   def init working_dir = nil, sync_dir = nil, pack_dir = nil, archive_format = nil
-    SixSync::Repository.init working_dir, sync_dir, pack_dir, archive_format
+    Repository.init working_dir, sync_dir, pack_dir, archive_format
   end
 
   alias_method :old_clone, :clone
   # Clone a repository from url
   def clone url, working_dir = nil, sync_dir = nil, pack_dir = nil, archive_format = nil
-    SixSync::Repository.clone url, working_dir, sync_dir, pack_dir, archive_format
+    Repository.clone url, working_dir, sync_dir, pack_dir, archive_format
   end
 end
