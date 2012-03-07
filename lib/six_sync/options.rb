@@ -91,7 +91,7 @@ module SixSync
           run do |opts, args, cmd|
             puts "Running update, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # Repository.update dir
+            Repository.update dir
           end
         end
 
@@ -105,7 +105,7 @@ module SixSync
           run do |opts, args, cmd|
             puts "Running repair, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # Repository.repair dir
+            Repository.repair dir
           end
         end
 
@@ -119,7 +119,7 @@ module SixSync
           run do |opts, args, cmd|
             puts "Running commit, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # Repository.commit dir
+            Repository.commit dir
           end
         end
 
@@ -133,7 +133,7 @@ module SixSync
           run do |opts, args, cmd|
             puts "Running push, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # Repository.push dir
+            Repository.push dir
           end
         end
 
@@ -172,7 +172,7 @@ module SixSync
                        else
                          args
                        end
-            # Network.clone url, dir
+            Network.clone url, dir
           end
         end
 
@@ -188,7 +188,7 @@ module SixSync
           run do |opts, args, cmd|
             puts "Running Init, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # Network.init dir
+            Network.init dir
           end
         end
 
@@ -202,7 +202,7 @@ module SixSync
           run do |opts, args, cmd|
             puts "Running update, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # Network.update dir
+            Network.update dir
           end
         end
 
@@ -216,7 +216,7 @@ module SixSync
           run do |opts, args, cmd|
             puts "Running repair, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # Network.repair dir
+            Network.repair dir
           end
         end
 
@@ -230,7 +230,7 @@ module SixSync
           run do |opts, args, cmd|
             puts "Running commit, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # Network.commit dir
+            Network.commit dir
           end
         end
 
@@ -244,7 +244,7 @@ module SixSync
           run do |opts, args, cmd|
             puts "Running push, #{opts}, #{args}, #{cmd}"
             dir = args.empty? ? Dir.pwd : args[0]
-            # Network.push dir
+            Network.push dir
           end
         end
 
