@@ -35,7 +35,7 @@ module SixSync
       @working_directory = working_directory.nil? ? ::File.dirname(@sync_directory) : working_directory
       @pack_directory = pack_directory.nil? ? ::File.join(@sync_directory, DEFAULT_PACK_DIRECTORY_NAME) : pack_directory
 
-      @archive_format = "gz"
+      @archive_format = DEFAULT_ARCHIVE_FORMAT
 
       @status = :default
     end
