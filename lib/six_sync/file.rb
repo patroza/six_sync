@@ -5,6 +5,9 @@ module SixSync
     # Represents the status of the object
     attr_reader :status
 
+    # Represents the Checksum of this file
+    attr_reader :checksum
+
     # Initializes the object
     def initialize
       @status = :default
