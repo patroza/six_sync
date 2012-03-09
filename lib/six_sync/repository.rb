@@ -26,6 +26,9 @@ module SixSync
     # Format of archived content
     attr_accessor :archive_format
 
+    # Versions of this repository
+    attr_reader :versions
+
     # Initializes the object
     # @param [String] sync_directory Repository directory with configuration files, defaults to current_working_directory/{DEFAULT_SYNC_DIRECTORY_NAME}
     # @param [String] working_directory Working directory with unarchived root, defaults to parent of sync_directory
@@ -37,6 +40,7 @@ module SixSync
 
       @archive_format = DEFAULT_ARCHIVE_FORMAT
 
+      @versions = []
       @status = :default
     end
 
