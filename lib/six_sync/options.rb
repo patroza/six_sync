@@ -17,7 +17,7 @@ module SixSync
         #super_cmd = Cri::Command.new_basic_root # Bug with h self.help -> cmd.help etc
         super_cmd = Cri::Command.define do
           name        'six_sync'
-          usage       'six_sync [options]'
+          usage       'six_sync [command] [options]'
           summary     'Managing and Distributing of SixSync repositories'
           description 'Provides Repository operations'
 
@@ -145,7 +145,7 @@ module SixSync
       def _parse_network_command
         super_cmd = Cri::Command.define do
           name    'network'
-          usage   'network COMMAND [URL] [options]'
+          usage   'network [command] [options]'
           summary 'Setup and Manage custom networks'
           description 'Provides Network Repository operations'
           aliases :n
