@@ -10,7 +10,7 @@
   program(s) have been supplied.
 =end
 
-require "six_sync/version"
+require_relative "six_sync/version"
 
 # SixSync is a library for distributing and managing repositories of files,
 # Leveraging rSync and zSync for differential transfers
@@ -34,13 +34,17 @@ module SixSync
   autoload :Network, "six_sync/network"
 
   autoload :Options, "six_sync/options"
-  autoload :NetworkOptions, "six_sync/options"
 
   autoload :Remote, "six_sync/remote"
 
   autoload :Repository, "six_sync/repository"
 
   module_function
+
+  # Retrieve full product version string
+  def product_version
+    "SixSync version #{VERSION}"
+  end
 
   # Finds the klass in our namespace
   # @param [Symbol] klass Class to lookup

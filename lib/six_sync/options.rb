@@ -1,4 +1,4 @@
-require 'optparse'
+require 'cri'
 require 'ostruct'
 
 module SixSync
@@ -8,148 +8,247 @@ module SixSync
       # Parse given args
       # @param [Array] args Parse given args
       def parse args = ARGV
-        options = OpenStruct.new
-        options.tasks = []
-
-        _parse(options).parse!(args)
-
-        options
+        _parse.run(args)
       end
 
       private
       # Parser definition
-      def _parse options
-        OptionParser.new do |opts|
-          opts.banner = "Usage: #{$0} [options]"
-          opts.separator ""
-          opts.separator "Specific options:"
+      def _parse
+        #super_cmd = Cri::Command.new_basic_root # Bug with h self.help -> cmd.help etc
+        super_cmd = Cri::Command.define do
+          name        'six_sync'
+          usage       'six_sync [command] [options]'
+          summary     'Managing and Distributing of SixSync repositories'
+          description 'Provides Repository operations'
 
-          opts.on("-c", "--clone URL",
-                  "Clone from given URL") do |url|
-            options.tasks << [:clone, url]
+
+          option :h, :help, 'show help for this command' do |value, cmd|
+            puts cmd.help
+            exit 0
           end
 
-          opts.on("-i", "--init [DIR]",
-                  "Init at given dir, or current dir if unspecified") do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:init, dir]
+          subcommand Cri::Command.new_basic_help
+
+          option nil, :version, 'Show version' do |value, cmd|
+           puts SixSync.product_version
+           exit 0
           end
 
-          opts.on("-u", "--update [DIR]",
-                  "Update the given dir, or current dir if unspecified") do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:update, dir]
-          end
+          flag :v, :verbose, 'Verbose'
+        end
 
-          opts.on("-r", "--repair [DIR]",
-                  "Repair the given dir, or current dir if unspecified") do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:repair, dir]
-          end
+        super_cmd.define_command do
+          name    'clone'
+          usage   'clone URL [DIR] [options]'
+          summary 'Clone a repository'
+          description '[DIR] Defaults to current directory'
+          aliases :c
 
-          opts.on("-c", "--commit [DIR]",
-                  "Commit the given dir, or current dir if unspecified") do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:commit, dir]
-          end
+          option :s, :sync_dir, 'Specify Sync directory. Defaults to DIR/.sync', :argument => :required
+          option :p, :pack_dir, 'Specify Pack directory. Defaults to SYNC_DIR/.pack', :argument => :required
 
-          opts.on("-p", "--push [DIR]",
-                  "Push the given dir, or current dir if unspecified") do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:push, dir]
-          end
+          run do |opts, args, cmd|
+            puts "Running Clone, #{opts}, #{args}, #{cmd}"
+            if args.empty?
+              puts "Missing URL"
+              exit 1
+            end
 
-          # Boolean switch.
-          opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
-            options.verbose = v
-          end
-
-          opts.separator ""
-          opts.separator "Common options:"
-
-          # No argument, shows at tail.  This will print an options summary.
-          # Try it and see!
-          opts.on_tail("-h", "--help", "Show this message") do
-            puts opts
-            exit
-          end
-
-          # Another typical switch to print the version.
-          opts.on_tail("-v", "--version", "Show version") do
-            puts SixSync::VERSION
-            exit
+            url, working_dir = if args.size == 1
+              [args[0], Dir.pwd]
+                       else
+              args
+            end
+            Repository.clone url, working_dir, opts[:sync_dir], opts[:pack_dir]
           end
         end
+
+        super_cmd.define_command do
+          name    'init'
+          usage   'init [DIR] [options]'
+          summary 'Init a repository'
+          description '[DIR] Defaults to current directory'
+          aliases :i
+
+          option :a, :archive_format, "Specify archive format. Defaults to #{SixSync::Repository::DEFAULT_ARCHIVE_FORMAT}", :argument => :required
+          option :s, :sync_dir, 'Specify Sync directory. Defaults to DIR/.sync', :argument => :required
+          option :p, :pack_dir, 'Specify Pack directory. Defaults to SYNC_DIR/.pack', :argument => :required
+
+          run do |opts, args, cmd|
+            puts "Running Init, #{opts}, #{args}, #{cmd}"
+            working_dir = args.empty? ? Dir.pwd : args[0]
+            Repository.init working_dir, opts[:sync_dir], opts[:pack_dir], opts[:archive_format]
+          end
+        end
+
+        super_cmd.define_command do
+          name    'update'
+          usage   'update [DIR] [options]'
+          summary 'Update a repository'
+          description '[DIR] Defaults to current directory'
+          aliases :u
+
+          run do |opts, args, cmd|
+            puts "Running update, #{opts}, #{args}, #{cmd}"
+            dir = args.empty? ? Dir.pwd : args[0]
+            Repository.update dir
+          end
+        end
+
+        super_cmd.define_command do
+          name    'repair'
+          usage   'repair [DIR] [options]'
+          summary 'Repair a repository'
+          description '[DIR] Defaults to current directory'
+          aliases :r
+
+          run do |opts, args, cmd|
+            puts "Running repair, #{opts}, #{args}, #{cmd}"
+            dir = args.empty? ? Dir.pwd : args[0]
+            Repository.repair dir
+          end
+        end
+
+        super_cmd.define_command do
+          name    'commit'
+          usage   'commit [DIR] [options]'
+          summary 'Commit a repository'
+          description '[DIR] Defaults to current directory'
+          #aliases :c
+
+          run do |opts, args, cmd|
+            puts "Running commit, #{opts}, #{args}, #{cmd}"
+            dir = args.empty? ? Dir.pwd : args[0]
+            Repository.commit dir
+          end
+        end
+
+        super_cmd.define_command do
+          name    'push'
+          usage   'push [DIR] [options]'
+          summary 'Push a repository'
+          description '[DIR] Defaults to current directory'
+          aliases :i
+
+          run do |opts, args, cmd|
+            puts "Running push, #{opts}, #{args}, #{cmd}"
+            dir = args.empty? ? Dir.pwd : args[0]
+            Repository.push dir
+          end
+        end
+
+        super_cmd.add_command _parse_network_command
+
+        super_cmd
       end
-    end
-  end
 
-  # Handles commandline parameters for the Network tool
-  class NetworkOptions < Options
-    class <<self
-      private
-      def _parse options
-        OptionParser.new do |opts|
-          opts.banner = "Usage: #{$0} [options]"
-          opts.separator ""
-          opts.separator "Specific options:"
+      def _parse_network_command
+        super_cmd = Cri::Command.define do
+          name    'network'
+          usage   'network [command] [options]'
+          summary 'Setup and Manage custom networks'
+          description 'Provides Network Repository operations'
+          aliases :n
 
-          opts.on("-c", "--clone URL",
-                  "Clone from given URL") do |url|
-            options.tasks << [:clone, url]
-          end
+          subcommand Cri::Command.new_basic_help
+        end
 
-          opts.on("-i", "--init [DIR]",
-                  "Init at given dir, or current dir if unspecified") do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:init, dir]
-          end
+        super_cmd.define_command do
+          name    'clone'
+          usage   'clone URL [DIR] [options]'
+          summary 'Clone a repository'
+          description '[DIR] Defaults to current directory'
+          aliases :c
 
-          opts.on("-u", "--update [DIR]",
-                  "Update the given dir, or current dir if unspecified") do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:update, dir]
-          end
+          run do |opts, args, cmd|
+            puts "Running Clone, #{opts}, #{args}, #{cmd}"
+            if args.empty?
+              puts "Missing URL"
+              exit 1
+            end
 
-          opts.on("-r", "--repair [DIR]",
-                  "Repair the given dir, or current dir if unspecified") do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:repair, dir]
-          end
-
-          opts.on("-c", "--commit [DIR]",
-                  "Commit the given dir, or current dir if unspecified") do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:commit, dir]
-          end
-
-          opts.on("-p", "--push [DIR]",
-                  "Push the given dir, or current dir if unspecified") do |dir|
-            dir = Dir.pwd if dir.nil?
-            options.tasks << [:push, dir]
-          end
-
-          # Boolean switch.
-          opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
-            options.verbose = v
-          end
-
-          opts.separator ""
-          opts.separator "Common options:"
-
-          # No argument, shows at tail.  This will print an options summary.
-          # Try it and see!
-          opts.on_tail("-h", "--help", "Show this message") do
-            puts opts
-            exit
-          end
-
-          # Another typical switch to print the version.
-          opts.on_tail("-v", "--version", "Show version") do
-            puts SixSync::VERSION
-            exit
+            url, dir = if args.size == 1
+                         [args[0], Dir.pwd]
+                       else
+                         args
+                       end
+            Network.clone url, dir
           end
         end
+
+        super_cmd.define_command do
+          name    'init'
+          usage   'init [DIR] [options]'
+          summary 'Init a repository'
+          description '[DIR] Defaults to current directory'
+          aliases :i
+
+          option :a, :archive_format, 'Specify archive format', :argument => :required
+
+          run do |opts, args, cmd|
+            puts "Running Init, #{opts}, #{args}, #{cmd}"
+            dir = args.empty? ? Dir.pwd : args[0]
+            Network.init dir
+          end
+        end
+
+        super_cmd.define_command do
+          name    'update'
+          usage   'update [DIR] [options]'
+          summary 'Update a repository'
+          description '[DIR] Defaults to current directory'
+          aliases :u
+
+          run do |opts, args, cmd|
+            puts "Running update, #{opts}, #{args}, #{cmd}"
+            dir = args.empty? ? Dir.pwd : args[0]
+            Network.update dir
+          end
+        end
+
+        super_cmd.define_command do
+          name    'repair'
+          usage   'repair [DIR] [options]'
+          summary 'Repair a repository'
+          description '[DIR] Defaults to current directory'
+          aliases :r
+
+          run do |opts, args, cmd|
+            puts "Running repair, #{opts}, #{args}, #{cmd}"
+            dir = args.empty? ? Dir.pwd : args[0]
+            Network.repair dir
+          end
+        end
+
+        super_cmd.define_command do
+          name    'commit'
+          usage   'commit [DIR] [options]'
+          summary 'Commit a repository'
+          description '[DIR] Defaults to current directory'
+          #aliases :c
+
+          run do |opts, args, cmd|
+            puts "Running commit, #{opts}, #{args}, #{cmd}"
+            dir = args.empty? ? Dir.pwd : args[0]
+            Network.commit dir
+          end
+        end
+
+        super_cmd.define_command do
+          name    'push'
+          usage   'push [DIR] [options]'
+          summary 'Push a repository'
+          description '[DIR] Defaults to current directory'
+          aliases :i
+
+          run do |opts, args, cmd|
+            puts "Running push, #{opts}, #{args}, #{cmd}"
+            dir = args.empty? ? Dir.pwd : args[0]
+            Network.push dir
+          end
+        end
+
+        super_cmd
       end
     end
   end

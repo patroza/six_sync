@@ -6,45 +6,36 @@ context "Options" do
     context "Main" do
       setup { SixSync::Options }
 
-      asserts("returns an OpenStruct") { topic.parse.is_a?(OpenStruct) }
-      asserts("tasks is Array") { topic.parse.tasks.is_a?(Array) }
+      asserts("Default Params") { topic.parse([]) }.raises SystemExit
 
-      asserts("verbose") { topic.parse(["-v"]).verbose }.equals true
-      asserts("no-verbose") { topic.parse(["--no-verbose"]).verbose }.equals false
+      asserts("version") { topic.parse(["--version"]) }.raises SystemExit #.equals 0
+      asserts("help") { topic.parse(["--help"]) }.raises SystemExit #.equals 0
+      #asserts("no-verbose") { topic.parse([]).options.verbose? }.equals false
+      asserts("verbose") { topic.parse(["-v"]) }.raises SystemExit
 
-      # TODO: How to test the exit properly?
-      asserts("version") { mock(SixSync::Options).exit { 0 }; topic.parse(["--version"])} #.equals 0
-      asserts("help") { mock(SixSync::Options).exit { 0 }; topic.parse(["--help"]) } #.equals 0
-
-      asserts("init") { topic.parse(["--init"]).tasks }.same_elements [[:init, Dir.pwd]]
-      asserts("init at specified dir") { topic.parse(["--init", "C:/test/test"]).tasks }.same_elements [[:init, "C:/test/test"]]
-      asserts("clone") { topic.parse(["--clone", "http://localhost/test"]).tasks }.same_elements [[:clone, "http://localhost/test"]]
-      asserts("update") { topic.parse(["--update"]).tasks }.same_elements [[:update, Dir.pwd]]
-      asserts("repair") { topic.parse(["--repair"]).tasks }.same_elements [[:repair, Dir.pwd]]
-      asserts("commit") { topic.parse(["--commit"]).tasks }.same_elements [[:commit, Dir.pwd]]
-      asserts("push") { topic.parse(["--push"]).tasks }.same_elements [[:push, Dir.pwd]]
+      context "Specific params" do
+        asserts("init") { mock(SixSync::Repository).init(Dir.pwd, nil, nil, nil); topic.parse(["init"]) }.nil # Without mock it actually returns the Repository instance
+        asserts("init at specified dir") { dir = "C:/test/test"; mock(SixSync::Repository).init(dir, nil, nil, nil); topic.parse(["init", dir]) }.nil
+        asserts("clone") { url = "http://localhost/test"; mock(SixSync::Repository).clone(url, Dir.pwd, nil, nil); topic.parse(["clone", url]) }.nil
+        asserts("update") { mock(SixSync::Repository).update(Dir.pwd); topic.parse(["update"]) }.nil
+        asserts("repair") { mock(SixSync::Repository).repair(Dir.pwd); topic.parse(["repair"]) }.nil
+        asserts("commit") { mock(SixSync::Repository).commit(Dir.pwd); topic.parse(["commit"]) }.nil
+        asserts("push") { mock(SixSync::Repository).push(Dir.pwd); topic.parse(["push"]) }.nil
+      end
     end
 
     context "Network" do
-      setup { SixSync::NetworkOptions }
+      setup { SixSync::Options }
 
-      asserts("returns an OpenStruct") { topic.parse.is_a?(OpenStruct) }
-      asserts("tasks is Array") { topic.parse.tasks.is_a?(Array) }
-
-      asserts("verbose") { topic.parse(["-v"]).verbose }.equals true
-      asserts("no-verbose") { topic.parse(["--no-verbose"]).verbose }.equals false
-
-      # TODO: How to test the exit properly?
-      asserts("version") { mock(SixSync::NetworkOptions).exit { 0 }; topic.parse(["--version"])} #.equals 0
-      asserts("help") { mock(SixSync::NetworkOptions).exit { 0 }; topic.parse(["--help"]) } #.equals 0
-
-      asserts("init") { topic.parse(["--init"]).tasks }.same_elements [[:init, Dir.pwd]]
-      asserts("init at specified dir") { topic.parse(["--init", "C:/test/test"]).tasks }.same_elements [[:init, "C:/test/test"]]
-      asserts("clone") { topic.parse(["--clone", "http://localhost/test"]).tasks }.same_elements [[:clone, "http://localhost/test"]]
-      asserts("update") { topic.parse(["--update"]).tasks }.same_elements [[:update, Dir.pwd]]
-      asserts("repair") { topic.parse(["--repair"]).tasks }.same_elements [[:repair, Dir.pwd]]
-      asserts("commit") { topic.parse(["--commit"]).tasks }.same_elements [[:commit, Dir.pwd]]
-      asserts("push") { topic.parse(["--push"]).tasks }.same_elements [[:push, Dir.pwd]]
+      context "Specific params" do
+        asserts("init") { mock(SixSync::Network).init(Dir.pwd); topic.parse(["network", "init"]) }.nil # Without mock it actually returns the Network instance
+        asserts("init at specified dir") { dir = "C:/test/test"; mock(SixSync::Network).init(dir); topic.parse(["network", "init", dir]) }.nil
+        asserts("clone") { url = "http://localhost/test"; mock(SixSync::Network).clone(url, Dir.pwd); topic.parse(["network", "clone", url]) }.nil
+        asserts("update") { mock(SixSync::Network).update(Dir.pwd); topic.parse(["network", "update"]) }.nil
+        asserts("repair") { mock(SixSync::Network).repair(Dir.pwd); topic.parse(["network", "repair"]) }.nil
+        asserts("commit") { mock(SixSync::Network).commit(Dir.pwd); topic.parse(["network", "commit"]) }.nil
+        asserts("push") { mock(SixSync::Network).push(Dir.pwd); topic.parse(["network", "push"]) }.nil
+      end
     end
   end
 end

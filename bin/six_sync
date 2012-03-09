@@ -2,5 +2,8 @@
 
 require 'six_sync'
 
+# Initialize configuration
+configuration = SixSync::Configuration.new
+
 # Parse commandline arguments
 options = SixSync::Options.parse

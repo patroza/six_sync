@@ -5,8 +5,11 @@ module SixSync
     # Represents the status of the object
     attr_reader :status
 
+    attr_reader :url
+
     # Initializes the object
-    def initialize
+    def initialize url
+      @url = url
       @status = :default
     end
   end
