@@ -21,5 +21,7 @@ Gem::Specification.new do |s|
   # specify any dependencies here; for example:
   s.add_runtime_dependency "cri"
   s.add_development_dependency "riot"
+  s.add_development_dependency "cucumber"
+  s.add_development_dependency "rspec"
   s.add_development_dependency "yard"
 end
